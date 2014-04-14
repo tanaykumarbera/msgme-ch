@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% set title='Login | ChatMe' %}
+
+{% block maincontent %}
+	<div class="row">
+		<div class="col-sm-2"></div>
+                <div class="col-sm-3">
+                    <img src="/static/img/lin.png" width="300">
+                </div>
+		<div class="col-sm-4 col-sm-offset-1 cont">
+			<form method="POST" action="/login">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">username</span>
+                                    <input type="text" name="username" class="form-control" id="username" placeholder="Enter your username" required/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">password</span>
+                                    <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password" required/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <input type="submit" value="Login" class="btn btn-default pull-right" style="margin-right: 20px;">
+                            </div>
+			</form>
+		</div>
+		<div class="col-sm-2"></div>
+	</div>
+	<div class="blnk120"></div>
+{% endblock maincontent %}

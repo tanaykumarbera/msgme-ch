@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% set title='Signup | ChatMe' %}
+
+{% block maincontent %}
+	<div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-4 cont">
+                <form method="POST" action="/signup">
+                    <div class="form-group">
+                        <input type="text" name="username" class="form-control" id="username" placeholder="Pick a username" required/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" class="form-control" id="password" placeholder="Choose a password" required/>
+                    </div>
+                    <div class="form-group">
+                        <div class="pull-right">
+                            <label title="i m a boy"><input type="radio" name="sex" value="1" id="sex" checked="checked"/>&nbsp;&nbsp;<span id="boy"></span></label>
+                            <label title="i m a girl" style="margin-left: 30px;"><input type="radio" name="sex" value="2" id="sex"/>&nbsp;&nbsp;<span id="gal"></span></label>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 50px;">
+                        <input type="submit" value="Become one of us" class="btn btn-default pull-right" style="margin-right: 20px;">
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-3 col-sm-offset-1">
+                <img src="/static/img/sup.png" width="300" style="margin-top: 50px;">
+            </div>
+            <div class="col-sm-2"></div>
+	</div>
+	<div class="blnk120"></div>
+{% endblock maincontent %}

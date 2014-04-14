@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>{{ title }}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="shortcut icon" href="/static/img/fav.png">
+		<link href="/static/css/style.css" rel="stylesheet" media="screen">
+        <!--[if lt IE 9]>  
+          <script src="/static/b/assets/js/html5shiv.js"></script>  
+          <script src="/static/b/assets/js/respond.min.js"></script>  
+        <![endif]-->  
+        <!--<link href="/static/b/css/bootstrap.min.css" rel="stylesheet" media="screen">-->
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div id="wrapper">
+            <header>
+                <nav role="navigation">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" rel="home" href="/" title="Home"><img src="/static/img/logo.png"/></a>
+                        </div>
+                        <div id="nav-clps" class="collapse navbar-collapse pT8">
+                            
+                            <div class="col-sm-3 col-md-3 pull-right">
+                                <ul class="nav navbar-nav">
+                                {% if user.username %}
+                                    <li><a href="#" class="usernam"><span class="glyphicon glyphicon-user"><span>&nbsp;Hey {{ user.username }}</a></li>
+                                    <li><a href="/logout" class="usernam" title="logout"><span class="glyphicon glyphicon-off"></span></a></li>
+                                {% else %}
+                                    <li><a href="/signup"><span class="glyphicon glyphicon-send"><span>&nbsp;Signup</a></li>
+									<li><a href="/login"><span class="glyphicon glyphicon-log-in"><span>&nbsp;Login</a></li>
+                                {% endif %}
+                                </ul>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </nav>
+            </header>
+         	<div class="blnk120"></div>
+            {% if error %}
+                <div class="container">
+                    <div class="alert alert-danger alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <p class="alert">{{error}}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if success %}
+                <div class="container">
+                    <div class="alert alert-success alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <p class="alert">{{success}}</p>
+                    </div>
+                </div>
+            {% endif %}
+
+            <section class="container">
+                    {% block maincontent %}
+                    {% endblock maincontent %}
+            </section>
+            <div id="push"></div>
+        </div>
+        
+        <footer>
+            <div class="container">
+                <hr>
+                <div class="row">
+                    <div class="col-md-7">
+                        <div  style="position: absolute; bottom: 20px;">
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-2">
+                            </div>
+                            <div class="col-sm-8">
+                                <p class="note">tanaykumarbera@gmail.com | NITMAS | +91 7679017709</p> 
+                            </div>
+                            <div class="col-md-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    <!--
+    <script src="/static/b/js/jquery.js"></script>
+    <script src="/static/b/js/bootstrap.min.js"></script>
+	-->
+	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    {% block jScript %}
+    {% endblock jScript %}
+    <script>
+        $(document).ready(function(){
+            $("#nav-btn").click(function(){$("#nav-icn").toggleClass("glyphicon-th glyphicon-th-large");});
+            {% block jsdocReady %}
+            {% endblock jsdocReady %}
+        });
+    </script>
+    
+  </body>  
+</html>

@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% set title = "Home | ChatMe" %}
+
+{% block maincontent %}
+	<div class="row">
+		{% if user.username %}
+			<div class="col-sm-3 col-sm-offset-1">
+				<div class="panel panel-primary cht">
+						<div class="panel-heading">
+							<span class="glyphicon glyphicon-film"></span> Pick one to chat
+						</div>
+					<div class="list-group" id="frnList" style="overflow-y: auto; height: 450px;">
+						
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-7 cht">
+				<div class="panel panel-primary">
+					<div id="chat" class="panel-body cht-body" style="overflow-y: auto;">
+						<div id="chatLoader"></div>
+						<div class="blnk120"></div>
+						<div class="alert alert-info" style="margin: 20px 40px;">
+							<p>Hi there.. You see there are minions all around. Pick one and enjoy chatting without revealing your identity. Even you are a menion to someone else ;)</p>
+						</div>
+					</div>
+					<div class="panel-footer">
+						<input type="text" class="form-control" name="newmsg" id="newmsg" placeholder="Write message and hit enter">
+					</div>
+				</div>
+			</div>
+		
+		{% else %}
+            <div class="col-sm-6 col-sm-offset-1">
+				<div class="blnk120"></div>
+				<h1 class="text-center mf">the Minion Network</h1>
+				<p class="text-center mf">Never mind! Just Sign up and start using the service :)</p>
+				<p class="text-center mf">its good to be hidden ;) grab a minion account and start chatting</p>
+			</div>
+			<div class="col-sm-5 cht">
+				<img class="img-responsive" src="/static/img/h1.png" width="500" style="width: 500; margin: 0px auto;">
+			</div>
+			
+			<img class="img-responsive" src="/static/img/h2.png" width="800" style="width: 800; margin: 0px auto;">
+			
+		{% endif %}
+	</div>
+{% endblock maincontent %}
+
+{% block jScript %}
+
+{% if user.username %}
+	<audio id="beep">
+		<source src="/static/bell/1.wav"></source>
+	</audio>
+	
+	<script>
+        var s, friendList, cid, newCount, aid=0;
+		var audio = $("#beep")[0];
+		
+        function frnLoader(){ 
+            loadFrns();
+			setInterval(function(){ loadFrns();}, 10000);
+			$("#chatLoader").fadeOut();
+			$("#newmsg").attr("disabled","disabled");
+        }
+		
+		function loadFrns(){
+			var ar= $.ajax({
+                url: "/frnlist",
+                type: "POST",
+                timeout: 20000
+            });
+            ar.done(function(data){
+                s=''; newCount = 0;
+                friendList= $.parseJSON(data);
+                $(friendList).each(function(i,frnd){
+					s+='<a href="#" class="list-group-item ';
+					if(aid==frnd.uid) s+='active';
+					s+='" style="text-decoration: none;" uid="'+frnd.uid+'" sex="'+frnd.sex+'" onclick="loadchat(this)"><img src="/static/img/g'+frnd.sex+'.png" height="30" class="cht-head"><strong class="unam">'+frnd.name+'</strong>';
+                    if(frnd.msg){
+						newCount++;
+						s+='<span class="label label-success pull-right">NEW</span>';
+					}
+					s+='</a>';
+                });
+                $("#frnList").html(s);
+				if(newCount!=0) audio.play();
+            });
+			ar.fail(function(data){
+				alert("connection problem");
+			});
+		}
+        
+        function freezeChat(freeze){
+            if(freeze===true){
+                $("#chatLoader").fadeIn();
+                $("#newmsg").attr("disabled","disabled");
+            }else{
+                $("#chatLoader").fadeOut();
+                $("#newmsg").removeAttr("disabled");
+            }
+        }
+		
+        function loadchat(usr){
+			clearInterval(cid);
+            $(".active").removeClass("active");
+            freezeChat(true);
+            $(usr).addClass("active");
+			aid= $(usr).attr("uid");
+			loadMsg(usr);
+			cid= setInterval(function(){loadMsg(usr);}, 10000);
+        }
+		
+		function loadMsg(usr){
+			var rq= $.ajax({
+                url: "/msg",
+                type: "GET",
+                timeout: 20000,
+				data: "action=load&uid="+$(usr).attr("uid")
+            });
+			
+            rq.done(function(data){
+                if(data=="none"){
+					$("#chat").html('<div id="chatLoader"></div><div class="blnk120"></div><div class="alert alert-info" style="margin: 20px 40px;"><p>You guys havent started a conversation yet! Start your first :)</p></div>');
+				}else{
+					json= $.parseJSON(data);
+					$("#chat").html("");
+					$(json).each(function(k,msg){
+						if($(".active").attr("uid") < {{user.key.id()}}){
+							if(msg.d==0)	$("#chat").append(msgGenerator(msg.txt,$(".active").attr("sex")));
+							else $("#chat").append(msgGenerator(msg.txt,0));
+						}else{
+							if(msg.d==1)	$("#chat").append(msgGenerator(msg.txt,$(".active").attr("sex")));
+							else $("#chat").append(msgGenerator(msg.txt,0));
+						}
+					});
+				}
+				freezeChat(false);
+            });
+			
+			rq.fail(function(data){
+				alert("connection problem");
+				freezeChat(false);
+			});
+		}
+		
+		function sendmsg(txt){
+			var ms = $.ajax({
+                url: "/msg",
+                type: "GET",
+                timeout: 20000,
+				data: "action=send&uid="+$("a.active").attr("uid")+"&nmsg="+txt
+            });
+			
+            ms.done(function(data){
+                if(data=="1"){
+					$("#chat").append(msgGenerator(txt,0));
+					$("#newmsg").val("");
+					$("#chat").animate({scrollTop: $("#chat").height()});
+				}else{
+					alert("Sorry, we were unable to send your msg. Please try again ::"+data);
+				}
+				freezeChat(false);
+            });
+			
+			ms.fail(function(data){
+				alert("connection problem");
+			});
+		}
+        
+        function msgGenerator(msg, sex){
+            var s='';
+            if(sex==0){
+                s= '<div class="row"><div class="col-sm-9 col-sm-offset-1 alert alert-info">'+msg+'</div><div class="col-sm-2"><img src="/static/img/g0.png" height="50" class="chat-icn"></div></div>'
+            }else{
+                s= '<div class="row"><div class="col-sm-2"><img src="/static/img/g'+sex+'.png" height="50" class="chat-icn"></div><div class="col-sm-9 alert alert-success text-right">'+msg+'</div></div>';
+            }
+            return s;
+        }
+        
+		$(document).on("keypress", "#newmsg", function(e) {
+			 if (e.which == 13) {
+				 sendmsg($("#newmsg").val());
+			}
+		});
+    </script>
+	
+{% endif %}
+{% endblock jScript %}
+
+{% block jsdocReady %}
+{% if user.username %}
+    frnLoader();
+{% endif %}
+{% endblock jsdocReady %}

@@ -1,0 +1,53 @@
+
+		lst=[
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Mario","sex":"2"},
+		 {"name":"Maria","sex":"1"},
+		 {"name":"Mario","sex":"2"}
+		]
+		
+		self.response.out.write(json.dumps(lst))
+		
+	def post(self):
+		"""
+		For a POST request, return the json of 10 random candidates
+		"""

@@ -1,0 +1,17 @@
+Name of project: Msg Me | the Minion Network
+
+Description:
+A Simple web chat application designed on MVC Architecture.
+Server side scripting done in python using webapp2 and jinja as templating language.
+Front end intensely uses ready made components and methods available in Bootstrap 3 and jQuery.
+Application facilitates chat in between any two registered user. An audio + visual alert 
+is provided for newer messages in conversation.
+
+project url:
+
+deployed at: http://msgme-ch.appspot.com
+source: https://github.com/tanaykumarbera/msgme-ch.git
+
+Name: TANAY KUMAR BERA
+Email: tanaykumarbera@gmail.com
+Mobile No: +91 7679017709
